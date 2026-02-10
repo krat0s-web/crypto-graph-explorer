@@ -34,7 +34,16 @@ export default function GraphCanvas({ nodes, edges, onNodeSelect, selectedNode, 
     const { width, height } = dimensions;
     const activeNodes = nodes.filter(n => !removedNodes.has(n.id));
     const activeNodeIds = new Set(activeNodes.map(n => n.id));
-    const activeEdges = edges.filter(e => activeNodeIds.has(e.source) && activeNodeIds.has(e.target));
+    const activeEdges = edges
+      .filter(e => {
+        const src = typeof e.source === 'object' ? (e.source as any).id : e.source;
+        const tgt = typeof e.target === 'object' ? (e.target as any).id : e.target;
+        return activeNodeIds.has(src) && activeNodeIds.has(tgt);
+      })
+      .map(e => ({
+        source: typeof e.source === 'object' ? (e.source as any).id : e.source,
+        target: typeof e.target === 'object' ? (e.target as any).id : e.target,
+      }));
 
     const g = svg.append('g');
 
