@@ -36,6 +36,69 @@ export interface SimulationResult {
   impactScore: number;
 }
 
+export interface ClusteringResult {
+  nodeId: string;
+  coefficient: number;
+  neighbors: number;
+  connectedPairs: number;
+}
+
+export interface BridgeEdge {
+  source: string;
+  target: string;
+  importance: number; // How critical is this bridge
+}
+
+export interface BetweennessResult {
+  nodeId: string;
+  betweenness: number;
+  normalizedBetweenness: number;
+}
+
+export interface DegreeDistribution {
+  degree: number;
+  count: number;
+  percentage: number;
+}
+
+export interface SimilarityResult {
+  nodeA: string;
+  nodeB: string;
+  jaccardSimilarity: number;
+  commonNeighbors: number;
+  adamicAdar: number;
+}
+
+export interface KCoreResult {
+  nodeId: string;
+  coreness: number;
+  shell: number;
+}
+
+export interface FlowSimulation {
+  step: number;
+  infectedNodes: Set<string>;
+  infectedCount: number;
+  newInfections: number;
+}
+
+export interface NetworkAnalysis {
+  clustering: {
+    average: number;
+    global: number;
+    distribution: ClusteringResult[];
+  };
+  bridges: BridgeEdge[];
+  betweenness: BetweennessResult[];
+  degreeDistribution: DegreeDistribution[];
+  averagePathLength: number;
+  diameter: number;
+  kCore: {
+    maxK: number;
+    distribution: KCoreResult[];
+  };
+}
+
 export const COMMUNITY_COLORS = [
   'hsl(170, 80%, 50%)',   // cyan
   'hsl(280, 60%, 55%)',   // purple

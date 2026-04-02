@@ -18,6 +18,9 @@ export default function Index() {
   const [activeTab, setActiveTab] = useState('graph');
   const [nodeLimit, setNodeLimit] = useState(MAX_DISPLAY_NODES);
   const [loading, setLoading] = useState(true);
+  const [highlightedNodes, setHighlightedNodes] = useState<Set<string>>(new Set());
+  const [highlightedEdges, setHighlightedEdges] = useState<Array<{source: string, target: string}>>([]); 
+  const [visualizationMode, setVisualizationMode] = useState<string | null>(null);
 
   const loadCSV = useCallback(async (csvText: string) => {
     setLoading(true);
@@ -100,6 +103,9 @@ export default function Index() {
               onNodeSelect={setSelectedNode}
               selectedNode={selectedNode}
               removedNodes={removedNodes}
+              highlightedNodes={highlightedNodes}
+              highlightedEdges={highlightedEdges}
+              visualizationMode={visualizationMode}
             />
           )}
           
@@ -126,7 +132,22 @@ export default function Index() {
               edges={edges}
               removedNodes={removedNodes}
               onRemoveNode={(id) => setRemovedNodes(prev => new Set(prev).add(id))}
+              onRemoveNodes={(ids) => setRemovedNodes(prev => {
+                const newSet = new Set(prev);
+                ids.forEach(id => newSet.add(id));
+                return newSet;
+              })}
               onResetRemovals={() => setRemovedNodes(new Set())}
+              onVisualize={(nodes, edges, mode) => {
+                setHighlightedNodes(new Set(nodes));
+                setHighlightedEdges(edges);
+                setVisualizationMode(mode);
+              }}
+              onClearVisualization={() => {
+                setHighlightedNodes(new Set());
+                setHighlightedEdges([]);
+                setVisualizationMode(null);
+              }}
             />
           </div>
         )}
