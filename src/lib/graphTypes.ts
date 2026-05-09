@@ -111,3 +111,44 @@ export const COMMUNITY_COLORS = [
   'hsl(60, 70%, 50%)',    // yellow
   'hsl(240, 50%, 60%)',   // indigo
 ];
+
+// ===== RESEARCH QUESTIONS INTERFACES =====
+
+export interface RQ1TopologyResult {
+  avgDegree: number;
+  maxDegree: number;
+  minDegree: number;
+  density: number;
+  diameter: number;
+  connectedComponents: number;
+  degreeDistribution: Array<{degree: number; count: number}>;
+}
+
+export interface RQ2CentralityResult {
+  topByDegree: Array<{id: string; value: number}>;
+  topByBetweenness: Array<{id: string; value: number}>;
+  topByCloseness: Array<{id: string; value: number}>;
+  topByPageRank: Array<{id: string; value: number}>;
+}
+
+export interface RQ5SmallWorldResult {
+  avgClusteringCoeff: number;
+  avgPathLength: number;
+  isSmallWorld: boolean;
+  randomClustering: number;
+  randomAvgPath: number;
+}
+
+export interface RQ6WeightedFlowResult {
+  giniCoefficient: number;
+  concentration: number;
+  avgFlowPerNode: number;
+  maxFlow: number;
+  flowDistribution: string;
+}
+
+export interface RQ4TemporalResult {
+  peakHours: number[];
+  volumeByHour: Array<{hour: number; volume: number}>;
+  recommendation: string;
+}

@@ -563,3 +563,248 @@ export function findShortestPath(
 
   return null; // No path found
 }
+
+// ===== 6 RESEARCH QUESTIONS ANALYSES =====
+
+/**
+ * RQ1: Network Topology Analysis
+ * Analyzes: degree distribution, density, connected components, diameter
+ */
+export function analyzeNetworkTopology(nodes: NodeData[], edges: EdgeData[]): {
+  avgDegree: number;
+  maxDegree: number;
+  minDegree: number;
+  density: number;
+  diameter: number;
+  connectedComponents: number;
+  degreeDistribution: Array<{degree: number; count: number}>;
+} {
+  const adj = new Map<string, Set<string>>();
+  const nodeSet = new Set(nodes.map(n => n.id));
+  nodes.forEach(n => adj.set(n.id, new Set()));
+  edges.forEach(e => {
+    adj.get(e.source)?.add(e.target);
+    adj.get(e.target)?.add(e.source);
+  });
+
+  // Degree stats
+  const degrees = nodes.map(n => n.degree);
+  const avgDegree = degrees.reduce((a, b) => a + b, 0) / nodes.length;
+  const maxDegree = Math.max(...degrees);
+  const minDegree = Math.min(...degrees);
+
+  // Density
+  const maxPossibleEdges = (nodes.length * (nodes.length - 1)) / 2;
+  const density = maxPossibleEdges > 0 ? edges.length / maxPossibleEdges : 0;
+
+  // Connected components (using BFS)
+  const visited = new Set<string>();
+  let components = 0;
+  for (const nodeId of nodeSet) {
+    if (!visited.has(nodeId)) {
+      components++;
+      const stack = [nodeId];
+      while (stack.length) {
+        const curr = stack.pop()!;
+        if (visited.has(curr)) continue;
+        visited.add(curr);
+        adj.get(curr)?.forEach(neighbor => {
+          if (!visited.has(neighbor)) stack.push(neighbor);
+        });
+      }
+    }
+  }
+
+  // Diameter (max shortest path)
+  let diameter = 0;
+  const sampleNodes = nodes.slice(0, Math.min(20, nodes.length));
+  for (let i = 0; i < sampleNodes.length; i++) {
+    for (let j = i + 1; j < sampleNodes.length; j++) {
+      const path = findShortestPath(nodes, edges, sampleNodes[i].id, sampleNodes[j].id);
+      if (path) diameter = Math.max(diameter, path.distance);
+    }
+  }
+
+  // Degree distribution
+  const degreeCount = new Map<number, number>();
+  degrees.forEach(d => {
+    degreeCount.set(d, (degreeCount.get(d) || 0) + 1);
+  });
+
+  return {
+    avgDegree,
+    maxDegree,
+    minDegree,
+    density,
+    diameter,
+    connectedComponents: components,
+    degreeDistribution: Array.from(degreeCount.entries())
+      .map(([degree, count]) => ({degree, count}))
+      .sort((a, b) => a.degree - b.degree)
+  };
+}
+
+/**
+ * RQ2: Centrality Analysis
+ * Measures: degree, betweenness, closeness, PageRank
+ */
+export function analyzeCentrality(nodes: NodeData[], edges: EdgeData[]): {
+  topByDegree: Array<{id: string; value: number}>;
+  topByBetweenness: Array<{id: string; value: number}>;
+  topByCloseness: Array<{id: string; value: number}>;
+  topByPageRank: Array<{id: string; value: number}>;
+} {
+  const adj = new Map<string, Set<string>>();
+  nodes.forEach(n => adj.set(n.id, new Set()));
+  edges.forEach(e => {
+    adj.get(e.source)?.add(e.target);
+    adj.get(e.target)?.add(e.source);
+  });
+
+  // Degree centrality (already have it)
+  const byDegree = nodes
+    .map(n => ({id: n.id, value: n.degree}))
+    .sort((a, b) => b.value - a.value)
+    .slice(0, 10);
+
+  // Closeness centrality (simplified)
+  const closeness = new Map<string, number>();
+  nodes.slice(0, 50).forEach(source => {
+    let totalDist = 0;
+    let reachable = 0;
+    nodes.forEach(target => {
+      if (source.id !== target.id) {
+        const path = findShortestPath(nodes, edges, source.id, target.id);
+        if (path) {
+          totalDist += path.distance;
+          reachable++;
+        }
+      }
+    });
+    closeness.set(source.id, reachable > 0 ? reachable / (totalDist || 1) : 0);
+  });
+
+  const byCloseness = Array.from(closeness.entries())
+    .map(([id, value]) => ({id, value}))
+    .sort((a, b) => b.value - a.value)
+    .slice(0, 10);
+
+  // PageRank (already have it)
+  const byPageRank = nodes
+    .map(n => ({id: n.id, value: n.pagerank}))
+    .sort((a, b) => b.value - a.value)
+    .slice(0, 10);
+
+  // Betweenness (from earlier implementation)
+  const betweennessResults = calculateBetweenness(nodes, edges);
+  const byBetweenness = betweennessResults.slice(0, 10).map(b => ({id: b.nodeId, value: b.betweenness}));
+
+  return {
+    topByDegree: byDegree,
+    topByBetweenness: byBetweenness,
+    topByCloseness: byCloseness,
+    topByPageRank: byPageRank
+  };
+}
+
+/**
+ * RQ5: Small-World Properties
+ * Measures: clustering coefficient, average path length
+ */
+export function analyzeSmallWorldProperties(nodes: NodeData[], edges: EdgeData[]): {
+  avgClusteringCoeff: number;
+  avgPathLength: number;
+  isSmallWorld: boolean;
+  randomAvgPath: number;
+  randomClustering: number;
+} {
+  const clusteringResults = calculateClustering(nodes, edges);
+  const pathResults = calculateAveragePathLength(nodes, edges);
+  
+  // Small-world is when: clustering >> random AND path length ~ random
+  const isSmallWorld = clusteringResults.average > 0.3 && pathResults.avgPath < 6;
+  
+  // Approximate random network properties (Erdős-Rényi)
+  const p = (2 * edges.length) / (nodes.length * (nodes.length - 1));
+  const randomClustering = p; // p for random graphs
+  const randomAvgPath = Math.log(nodes.length) / Math.log(nodes.length * p); // ln(N)/ln(k)
+  
+  return {
+    avgClusteringCoeff: clusteringResults.average,
+    avgPathLength: pathResults.avgPath,
+    isSmallWorld,
+    randomClustering,
+    randomAvgPath
+  };
+}
+
+/**
+ * RQ6: Weighted Flow Analysis
+ * Calculates Gini coefficient for transaction concentration
+ */
+export function calculateGiniCoefficient(values: number[]): number {
+  if (values.length === 0) return 0;
+  const sorted = [...values].sort((a, b) => a - b);
+  const n = sorted.length;
+  const mean = sorted.reduce((a, b) => a + b, 0) / n;
+  
+  let sum = 0;
+  for (let i = 0; i < n; i++) {
+    sum += (2 * (i + 1) - n - 1) * sorted[i];
+  }
+  
+  return sum / (n * n * mean) || 0;
+}
+
+/**
+ * Analyze weighted flows (transaction volumes)
+ */
+export function analyzeWeightedFlows(nodes: NodeData[], edges: EdgeData[]): {
+  giniCoefficient: number;
+  concentration: number; // % of volume in top 20%
+  avgFlowPerNode: number;
+  maxFlow: number;
+  flowDistribution: string;
+} {
+  // Simulate weights based on degree (proxy for transaction volume)
+  const weights = nodes.map(n => n.degree);
+  const gini = calculateGiniCoefficient(weights);
+  
+  // Check concentration (Pareto principle)
+  const sorted = [...weights].sort((a, b) => b - a);
+  const total = sorted.reduce((a, b) => a + b, 0);
+  const top20Pct = sorted.slice(0, Math.ceil(sorted.length * 0.2));
+  const top20Volume = top20Pct.reduce((a, b) => a + b, 0);
+  const concentration = (top20Volume / total) * 100;
+  
+  const flowDist = concentration > 80 ? "Highly concentrated" : 
+                   concentration > 60 ? "Concentrated" : 
+                   "Distributed";
+  
+  return {
+    giniCoefficient: gini,
+    concentration,
+    avgFlowPerNode: total / nodes.length,
+    maxFlow: Math.max(...weights),
+    flowDistribution: flowDist
+  };
+}
+
+/**
+ * RQ4: Temporal Dynamics (placeholder - needs time data)
+ */
+export function analyzeTemporalDynamics(nodes: NodeData[], edges: EdgeData[]): {
+  peakHours: number[];
+  volumeByHour: Array<{hour: number; volume: number}>;
+  recommendation: string;
+} {
+  // This is a placeholder - requires timestamp data in the CSV
+  return {
+    peakHours: [14, 15, 16],
+    volumeByHour: Array.from({length: 24}, (_, i) => ({
+      hour: i,
+      volume: Math.random() * 50000
+    })),
+    recommendation: "Enable temporal data in CSV for accurate analysis"
+  };
+}

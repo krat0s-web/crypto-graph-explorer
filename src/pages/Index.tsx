@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo, useCallback } from 'react';
 import { Network } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import GraphCanvas from '@/components/GraphCanvas';
+import GraphStats from '@/components/GraphStats';
 import StatsPanel from '@/components/StatsPanel';
 import AnalysisPanel from '@/components/AnalysisPanel';
 import { NodeData, EdgeData } from '@/lib/graphTypes';
@@ -97,16 +98,26 @@ export default function Index() {
               </div>
             </div>
           ) : (
-            <GraphCanvas
-              nodes={displayNodes}
-              edges={edges}
-              onNodeSelect={setSelectedNode}
-              selectedNode={selectedNode}
-              removedNodes={removedNodes}
-              highlightedNodes={highlightedNodes}
-              highlightedEdges={highlightedEdges}
-              visualizationMode={visualizationMode}
-            />
+            <>
+              <GraphCanvas
+                nodes={displayNodes}
+                edges={edges}
+                onNodeSelect={setSelectedNode}
+                selectedNode={selectedNode}
+                removedNodes={removedNodes}
+                highlightedNodes={highlightedNodes}
+                highlightedEdges={highlightedEdges}
+                visualizationMode={visualizationMode}
+              />
+              
+              {/* Graph Statistics Overlay */}
+              <GraphStats
+                nodes={displayNodes.filter(n => !removedNodes.has(n.id))}
+                edges={edges.filter(e => !removedNodes.has(e.source) && !removedNodes.has(e.target))}
+                loading={loading}
+                selectedNode={selectedNode}
+              />
+            </>
           )}
           
           {/* Node limit slider */}

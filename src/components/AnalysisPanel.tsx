@@ -12,7 +12,12 @@ import {
   calculateSimilarity,
   calculateKCore,
   simulateFlow,
-  findShortestPath
+  findShortestPath,
+  analyzeNetworkTopology,
+  analyzeCentrality,
+  analyzeSmallWorldProperties,
+  analyzeWeightedFlows,
+  analyzeTemporalDynamics
 } from '@/lib/graphUtils';
 import { 
   Trash2, 
@@ -171,6 +176,38 @@ export default function AnalysisPanel({
     setActiveAnalysis('flow');
   };
 
+  // ===== RESEARCH QUESTIONS HANDLERS =====
+
+  const runRQ1Topology = () => {
+    const result = analyzeNetworkTopology(activeNodes, activeEdges);
+    setAnalysisResults(result);
+    setActiveAnalysis('rq1');
+  };
+
+  const runRQ2Centrality = () => {
+    const result = analyzeCentrality(activeNodes, activeEdges);
+    setAnalysisResults(result);
+    setActiveAnalysis('rq2');
+  };
+
+  const runRQ5SmallWorld = () => {
+    const result = analyzeSmallWorldProperties(activeNodes, activeEdges);
+    setAnalysisResults(result);
+    setActiveAnalysis('rq5');
+  };
+
+  const runRQ6WeightedFlows = () => {
+    const result = analyzeWeightedFlows(activeNodes, activeEdges);
+    setAnalysisResults(result);
+    setActiveAnalysis('rq6');
+  };
+
+  const runRQ4Temporal = () => {
+    const result = analyzeTemporalDynamics(activeNodes, activeEdges);
+    setAnalysisResults(result);
+    setActiveAnalysis('rq4');
+  };
+
   return (
     <div className="h-full overflow-y-auto p-4 space-y-4">
       <h2 className="text-xs uppercase tracking-widest text-muted-foreground">Analyse de réseau</h2>
@@ -260,6 +297,55 @@ export default function AnalysisPanel({
           >
             <Share2 size={12} />
             Flux
+          </button>
+        </div>
+      </div>
+
+      {/* Research Questions Analyses */}
+      <div className="space-y-2">
+        <h3 className="text-[10px] uppercase tracking-wider text-muted-foreground/70">Questions de Recherche (RQ)</h3>
+        <div className="grid grid-cols-2 gap-2">
+          <button
+            onClick={runRQ1Topology}
+            className="flex items-center gap-1.5 px-2.5 py-2 rounded-lg bg-blue-500/10 border border-blue-500/30 hover:bg-blue-500/20 transition-colors text-xs"
+          >
+            <Network size={12} />
+            RQ1: Topologie
+          </button>
+          <button
+            onClick={runRQ2Centrality}
+            className="flex items-center gap-1.5 px-2.5 py-2 rounded-lg bg-cyan-500/10 border border-cyan-500/30 hover:bg-cyan-500/20 transition-colors text-xs"
+          >
+            <Target size={12} />
+            RQ2: Centralité
+          </button>
+          <button
+            onClick={runClusteringAnalysis}
+            className="flex items-center gap-1.5 px-2.5 py-2 rounded-lg bg-green-500/10 border border-green-500/30 hover:bg-green-500/20 transition-colors text-xs"
+          >
+            <Network size={12} />
+            RQ3: Clustering
+          </button>
+          <button
+            onClick={runRQ5SmallWorld}
+            className="flex items-center gap-1.5 px-2.5 py-2 rounded-lg bg-purple-500/10 border border-purple-500/30 hover:bg-purple-500/20 transition-colors text-xs"
+          >
+            <Layers size={12} />
+            RQ5: Small-World
+          </button>
+          <button
+            onClick={runRQ6WeightedFlows}
+            className="flex items-center gap-1.5 px-2.5 py-2 rounded-lg bg-amber-500/10 border border-amber-500/30 hover:bg-amber-500/20 transition-colors text-xs"
+          >
+            <TrendingUp size={12} />
+            RQ6: Flux Pondérés
+          </button>
+          <button
+            onClick={runRQ4Temporal}
+            className="flex items-center gap-1.5 px-2.5 py-2 rounded-lg bg-rose-500/10 border border-rose-500/30 hover:bg-rose-500/20 transition-colors text-xs col-span-2"
+          >
+            <Share2 size={12} />
+            RQ4: Analyse Temporelle
           </button>
         </div>
       </div>
@@ -475,6 +561,126 @@ export default function AnalysisPanel({
                 ))}
                 <p className="text-[11px] text-muted-foreground mt-2">
                   Taux final: {((analysisResults[analysisResults.length - 1].infected / activeNodes.length) * 100).toFixed(1)}%
+                </p>
+              </div>
+            </div>
+          )}
+
+          {/* RQ1: Topology */}
+          {activeAnalysis === 'rq1' && (
+            <div className="glass rounded-lg p-3 space-y-2 border-l-4 border-blue-500">
+              <div className="flex items-center gap-2">
+                <Network size={14} className="text-blue-500" />
+                <span className="font-semibold text-sm">RQ1: Topologie du Réseau</span>
+              </div>
+              <div className="text-xs space-y-1">
+                <p className="text-[11px] text-muted-foreground">Métriques globales:</p>
+                <div className="grid grid-cols-2 gap-2 text-[10px]">
+                  <div><span className="text-muted-foreground">Deg. moyen:</span> <span className="font-bold text-blue-500">{analysisResults.avgDegree.toFixed(2)}</span></div>
+                  <div><span className="text-muted-foreground">Deg. max:</span> <span className="font-bold text-blue-500">{analysisResults.maxDegree}</span></div>
+                  <div><span className="text-muted-foreground">Densité:</span> <span className="font-bold text-blue-500">{analysisResults.density.toFixed(4)}</span></div>
+                  <div><span className="text-muted-foreground">Diamètre:</span> <span className="font-bold text-blue-500">{analysisResults.diameter}</span></div>
+                  <div className="col-span-2"><span className="text-muted-foreground">Composantes:</span> <span className="font-bold text-blue-500">{analysisResults.connectedComponents}</span></div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* RQ2: Centrality */}
+          {activeAnalysis === 'rq2' && (
+            <div className="glass rounded-lg p-3 space-y-2 border-l-4 border-cyan-500">
+              <div className="flex items-center gap-2">
+                <Target size={14} className="text-cyan-500" />
+                <span className="font-semibold text-sm">RQ2: Mesures de Centralité</span>
+              </div>
+              <div className="text-xs space-y-2">
+                <div>
+                  <p className="text-[10px] text-muted-foreground font-bold mb-1">Top par degré:</p>
+                  {analysisResults.topByDegree.slice(0, 3).map((d: any, i: number) => (
+                    <div key={i} className="text-[9px] text-cyan-500">{shortenAddress(d.id)}: {d.value}</div>
+                  ))}
+                </div>
+                <div>
+                  <p className="text-[10px] text-muted-foreground font-bold mb-1">Top par PageRank:</p>
+                  {analysisResults.topByPageRank.slice(0, 3).map((d: any, i: number) => (
+                    <div key={i} className="text-[9px] text-cyan-500">{shortenAddress(d.id)}: {d.value.toFixed(4)}</div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* RQ5: Small-World */}
+          {activeAnalysis === 'rq5' && (
+            <div className="glass rounded-lg p-3 space-y-2 border-l-4 border-purple-500">
+              <div className="flex items-center gap-2">
+                <Layers size={14} className="text-purple-500" />
+                <span className="font-semibold text-sm">RQ5: Propriétés Small-World</span>
+              </div>
+              <div className="text-xs space-y-1">
+                <div className="grid grid-cols-2 gap-2">
+                  <div>
+                    <p className="text-[10px] text-muted-foreground">Coeff. clustering:</p>
+                    <p className="font-bold text-purple-500">{analysisResults.avgClusteringCoeff.toFixed(4)}</p>
+                  </div>
+                  <div>
+                    <p className="text-[10px] text-muted-foreground">Chemin moyen:</p>
+                    <p className="font-bold text-purple-500">{analysisResults.avgPathLength.toFixed(2)}</p>
+                  </div>
+                  <div className="col-span-2">
+                    <p className="text-[10px] text-muted-foreground">Est Small-World:</p>
+                    <p className="font-bold" style={{color: analysisResults.isSmallWorld ? '#10b981' : '#ef4444'}}>
+                      {analysisResults.isSmallWorld ? '✓ OUI' : '✗ NON'}
+                    </p>
+                  </div>
+                </div>
+                <p className="text-[9px] text-muted-foreground mt-1">
+                  Comparaison aléatoire: c={analysisResults.randomClustering.toFixed(4)}, L={analysisResults.randomAvgPath.toFixed(2)}
+                </p>
+              </div>
+            </div>
+          )}
+
+          {/* RQ6: Weighted Flows */}
+          {activeAnalysis === 'rq6' && (
+            <div className="glass rounded-lg p-3 space-y-2 border-l-4 border-amber-500">
+              <div className="flex items-center gap-2">
+                <TrendingUp size={14} className="text-amber-500" />
+                <span className="font-semibold text-sm">RQ6: Flux Pondérés (Gini)</span>
+              </div>
+              <div className="text-xs space-y-1">
+                <div className="grid grid-cols-2 gap-2">
+                  <div>
+                    <p className="text-[10px] text-muted-foreground">Coeff. Gini:</p>
+                    <p className="font-bold text-amber-500">{analysisResults.giniCoefficient.toFixed(4)}</p>
+                  </div>
+                  <div>
+                    <p className="text-[10px] text-muted-foreground">Concentration:</p>
+                    <p className="font-bold text-amber-500">{analysisResults.concentration.toFixed(1)}%</p>
+                  </div>
+                  <div className="col-span-2">
+                    <p className="text-[10px] text-muted-foreground">Distribution:</p>
+                    <p className="font-bold text-amber-500">{analysisResults.flowDistribution}</p>
+                  </div>
+                </div>
+                <p className="text-[9px] text-muted-foreground mt-1">
+                  Flux moyen par nœud: {analysisResults.avgFlowPerNode.toFixed(2)} | Max: {analysisResults.maxFlow}
+                </p>
+              </div>
+            </div>
+          )}
+
+          {/* RQ4: Temporal */}
+          {activeAnalysis === 'rq4' && (
+            <div className="glass rounded-lg p-3 space-y-2 border-l-4 border-rose-500">
+              <div className="flex items-center gap-2">
+                <Share2 size={14} className="text-rose-500" />
+                <span className="font-semibold text-sm">RQ4: Analyse Temporelle</span>
+              </div>
+              <div className="text-xs space-y-1">
+                <p className="text-[10px] text-muted-foreground">Heures de pointe: {analysisResults.peakHours.join(', ')}</p>
+                <p className="text-[10px] text-yellow-600 bg-yellow-500/10 rounded px-2 py-1 mt-2">
+                  ⚠ {analysisResults.recommendation}
                 </p>
               </div>
             </div>
