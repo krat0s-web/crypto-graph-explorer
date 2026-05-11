@@ -85,8 +85,18 @@ du r\'eseau \`a travers les phases de crise~: stabilit\'e pr\'e-choc,
 propagation du choc et restructuration post-choc.
 
 \paragraph{Visualisation interactive.}
-Les figures PNG statiques servent le format PDF du rapport mais limitent
-l'exploration des donn\'ees. Un tableau de bord web (utilisant par exemple
-Plotly ou D3.js) avec filtrage temporel, zoom sur les communaut\'es et
-inspection au niveau des n\oe{}uds permettrait une analyse interactive
-approfondie du r\'eseau de 12\,880 sommets.
+On a d\'evelopp\'e en parall\`ele du rapport un prototype web pour explorer
+les m\^emes donn\'ees \`a la souris~: \url{https://crypto-graph-explorer.vercel.app}~\cite{cryptographexplorer_web}.
+La visualisation est faite en D3.js, l'interface en React. Les six RQ et les
+cinq analyses compl\'ementaires de la section~\ref{sec:complementaires} y
+sont accessibles depuis un panneau lat\'eral, avec zoom, drag et filtrage
+par communaut\'e sur les $12\,880$ sommets. Le prototype tourne dans le
+navigateur, donc sur des m\'etriques pr\'e-calcul\'ees et quelques
+approximations~: \textit{betweenness} \'echantillonn\'ee, Gini calcul\'e sur
+les degr\'es au lieu des volumes WETH, et la dimension temporelle est
+absente faute de \textit{timestamps} dans le CSV embarqu\'e. Les chiffres
+exacts du rapport ($\sigma$, $Q$, $G$) restent ceux obtenus localement avec
+Python. Restent \`a embarquer dans le prototype les \textit{timestamps}
+(RQ4) et les poids WETH par ar\^ete (RQ6), et \`a y brancher un
+\textit{fitting} formel de la loi de puissance pour la distribution des
+degr\'es.

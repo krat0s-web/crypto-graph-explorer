@@ -85,3 +85,11 @@ Avec $Q = 0{,}6445$, le r\'eseau WETH s'organise en compartiments fonctionnels p
 Cette structure modulaire change la fa\c{c}on dont un choc se propage. \`A l'int\'erieur d'une communaut\'e, la densit\'e \'elev\'ee fait que la panique se diffuse vite~: les contreparties d'un m\^eme pool se passent le mouvement de vente en quelques sauts. Entre communaut\'es, la propagation passe presque exclusivement par les n\oe{}uds \`a forte interm\'ediarit\'e identifi\'es en RQ2 (\texttt{0x2818...cb7116}, \texttt{0xe50f...8128c8})~; ces ponts intercommunautaires sont moins nombreux, donc le choc met plus de temps \`a franchir les fronti\`eres protocolaires. La compartimentalisation joue donc le r\^ole d'un amortisseur partiel.
 
 La structure en n\oe{}ud papillon de RQ1 se superpose au partitionnement~: le noyau fortement connexe (SCC, $40{,}4\,\%$) se r\'epartit dans les cinq grandes communaut\'es, et les branches entrantes ou sortantes du \textit{bow-tie} correspondent aux micro-communaut\'es p\'eriph\'eriques. Les n\oe{}uds multi-centraux de RQ2 occupent les positions de liaison entre communaut\'es, ce qui explique pourquoi leur interm\'ediarit\'e est \'elev\'ee.
+
+\paragraph{Exploration interactive.}
+Le prototype web~\cite{cryptographexplorer_web} reprend directement la
+partition Louvain calcul\'ee ici. La colonne \texttt{community} du CSV
+embarqu\'e donne une couleur \`a chaque n\oe{}ud, et on rep\`ere alors
+d'un coup d'\oe{}il les sept plus grandes communaut\'es et les quelques
+adresses qui font le pont entre elles. Le bouton \og RQ3 \fg{} rappelle
+$Q = 0{,}6445$ et le nombre de communaut\'es d\'etect\'ees.

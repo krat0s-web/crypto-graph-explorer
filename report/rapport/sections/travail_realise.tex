@@ -4,9 +4,9 @@
 \section{Travail r\'ealis\'e}
 \label{sec:travail_realise}
 
-Le projet s'est d\'eroul\'e en quatre phases~: collecte des donn\'ees,
-construction du graphe, analyses par question de recherche, et r\'edaction
-du rapport.
+Le projet s'est d\'eroul\'e en cinq phases~: collecte des donn\'ees,
+construction du graphe, analyses par question de recherche, r\'edaction
+du rapport, et d\'eveloppement d'un prototype web interactif compl\'ementaire.
 
 \paragraph{Collecte et pr\'eparation des donn\'ees.}
 Les 401\,709 transferts WETH du 5 ao\^ut 2024 ont \'et\'e extraits de la
@@ -41,6 +41,21 @@ Le rapport est r\'edig\'e en \LaTeX{} et compil\'e avec pdf\LaTeX{} + Biber.
 Le fichier principal \texttt{main.tex} inclut 17~fichiers \texttt{.tex}
 (sections et annexes). La bibliographie est scind\'ee en deux~: r\'ef\'erences
 acad\'emiques et webographie, filtr\'ees par mot-cl\'e via \texttt{biblatex}.
+
+\paragraph{Prototype web interactif.}
+En parall\`ele du rapport, on a construit un prototype web pour explorer
+le r\'eseau sans installer Python. Il est d\'eploy\'e \`a l'adresse
+\url{https://crypto-graph-explorer.vercel.app}~\cite{cryptographexplorer_web}.
+La visualisation force-directed utilise D3.js, l'interface est faite en
+React + Vite avec les composants shadcn/ui. Le prototype lit un CSV de
+m\'etriques pr\'e-calcul\'ees (\texttt{nodes\_metrics.csv}, $12\,880$
+n\oe{}uds, degr\'e, PageRank et num\'ero de communaut\'e), et un panneau
+lat\'eral donne acc\`es aux six RQ et aux cinq analyses compl\'ementaires
+de la section~\ref{sec:complementaires}. Les chiffres exacts ($G$,
+$\sigma$, $Q$) viennent uniquement de l'ex\'ecution Python sur les
+donn\'ees brutes~; le prototype, lui, calcule des versions approch\'ees
+adapt\'ees au navigateur. L'annexe~\ref{ann:manuel} d\'ecrit l'acc\`es
+et ses limites plus en d\'etail.
 
 \begin{table}[H]
 \centering

@@ -24,6 +24,9 @@ VS Code & 1.9x & \'Editeur de code \\
 pdf\LaTeX{} & (inclus) & Compilation du rapport \\
 Biber & (inclus) & Backend bibliographique \\
 latexmk & (inclus) & Automatisation compilation \\
+Node.js & 20.x & Ex\'ecution du prototype web \\
+npm & 10.x & Gestionnaire de paquets JavaScript \\
+Vercel CLI & 51.x & D\'eploiement du prototype web \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -31,3 +34,5 @@ latexmk & (inclus) & Automatisation compilation \\
 Python a \'et\'e choisi pour ses biblioth\`eques scientifiques (NumPy, Pandas, NetworkX, Matplotlib). Les d\'ependances s'installent via \texttt{pip install -r requirements.txt}.
 
 Le rapport est compil\'e avec pdf\LaTeX{}, plus simple que Lua\LaTeX{} ou Xe\LaTeX{} et suffisant pour un document en fran\c{c}ais avec l'encodage T1. \TeX{} Live fournit tous les paquets n\'ecessaires, et \texttt{latexmk} automatise les passes de compilation.
+
+Le prototype web~\cite{cryptographexplorer_web} tourne sur Node.js et est b\^ati avec Vite. En local~: \texttt{npm install} puis \texttt{npm run dev}. Pour la mise en ligne~: \texttt{vercel deploy}. Les biblioth\`eques utilis\'ees c\^ot\'e front sont d\'ecrites dans la section~\ref{sec:bibliotheques}.

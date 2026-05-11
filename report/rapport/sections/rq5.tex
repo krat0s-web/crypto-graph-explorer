@@ -97,3 +97,12 @@ La Figure~\ref{fig:rq5_network} rend visible cette structure petit-monde~: les n
   \caption{\'Echantillon du r\'eseau WETH color\'e par coefficient de clustering local (bleu~=~faible, rouge~=~\'elev\'e). Les grappes \`a fort clustering (en rouge) illustrent les voisinages coh\'esifs caract\'eristiques des r\'eseaux petit-monde.}
   \label{fig:rq5_network}
 \end{figure}
+
+\paragraph{Exploration interactive.}
+Le bouton \og RQ5~: Small-World \fg{} du prototype web~\cite{cryptographexplorer_web}
+calcule le clustering et la longueur moyenne des chemins sur le sous-graphe
+affich\'e, g\'en\`ere un graphe al\'eatoire de m\^eme densit\'e pour
+comparer, et conclut par un OUI/NON \`a partir de seuils ($C > 0{,}3$ et
+$L < 6$). C'est utile pour visualiser le ph\'enom\`ene, mais le $\sigma$
+exact ($\sigma = 115{,}90$) rapport\'e ici demande la moyenne sur $10$
+tirages Erd\H{o}s-R\'enyi via NetworkX, ce que le navigateur ne fait pas.

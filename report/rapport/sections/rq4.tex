@@ -87,3 +87,12 @@ Le double pic (volume \`a 01h~UTC, transactions \`a 13h~UTC) s'inscrit dans la c
 L'inversion densit\'e/activit\'e \'eclaire la r\'eponse du r\'eseau au choc. Aux heures de pic, le nombre de n\oe{}uds actifs cro\^it plus vite que celui des ar\^etes~: les nouveaux participants, qu'ils soient attir\'es par la volatilit\'e ou pouss\'es par des liquidations, ouvrent surtout des connexions uniques avec un petit nombre de contreparties (typiquement un routeur DEX ou un pool de liquidit\'e). Cette injection de n\oe{}uds p\'eriph\'eriques dilue la densit\'e du graphe horaire. La structure en n\oe{}ud papillon de RQ1 (section~\ref{sec:rq1_interpretation}) explique pourquoi~: les branches entrantes et sortantes du \textit{bow-tie} s'\'etendent pendant le pic, et y ajoutent des adresses \`a usage unique qui ne participent pas aux \'echanges r\'eciproques du noyau fortement connexe. Aux heures nocturnes (22h--23h), le r\'eseau redevient plus compact et plus dense, domin\'e par les op\'erateurs habituels (les n\oe{}uds multi-centraux de RQ2, section~\ref{sec:rq2}) qui gardent des connexions multiples entre eux.
 
 Le double pic s'inscrit dans la lecture des autres analyses. Les n\oe{}uds \`a forte interm\'ediarit\'e de RQ2, en particulier \texttt{0x2818...cb7116}, ont vraisemblablement canalis\'e les flux de panique entre les communaut\'es d\'etect\'ees en RQ3. La structure communautaire a jou\'e un r\^ole de barri\`ere partielle~: le choc initi\'e dans les protocoles de liquidation nocturne (pic \`a 01h) n'a atteint les traders individuels qu'\`a l'ouverture des sessions europ\'eenne et am\'ericaine (pic \`a 13h).
+
+\paragraph{Exploration interactive.}
+RQ4 ne tourne pas vraiment dans le prototype web~\cite{cryptographexplorer_web}~:
+le CSV embarqu\'e \texttt{nodes\_metrics.csv} ne contient que des
+m\'etriques agr\'eg\'ees par n\oe{}ud, sans \textit{timestamp}. Le bouton
+\og RQ4 \fg{} se contente donc de rappeler le double pic 01h/13h en
+annotation. Pour rendre cette analyse interactive, il faudrait embarquer
+dans le navigateur le CSV brut des $401\,709$ transactions~; c'est l'une
+des pistes list\'ees en perspectives (section~\ref{subsec:perspectives}).

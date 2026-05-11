@@ -50,10 +50,17 @@ L'objectif principal est de r\'epondre \`a six questions de recherche (RQ) couvr
 
 \paragraph{Exclu du p\'erim\`etre~:}
 \begin{itemize}
-  \item Application web ou tableau de bord interactif
   \item Analyse multi-jours (seule la journ\'ee du 5 ao\^ut 2024 est consid\'er\'ee)
   \item Analyse d'autres tokens que WETH
   \item R\'e-extraction des donn\'ees depuis BigQuery (utilisation exclusive du CSV existant)
+\end{itemize}
+
+\paragraph{R\'ealis\'e en d\'epassement du p\'erim\`etre initial~:}
+\begin{itemize}
+  \item Application web interactive (\textit{prototype} D3.js + React)
+    d\'eploy\'ee \`a l'adresse \url{https://crypto-graph-explorer.vercel.app}~\cite{cryptographexplorer_web},
+    qui reproduit les six RQ et les cinq analyses compl\'ementaires de la
+    section~\ref{sec:complementaires} sur des m\'etriques pr\'e-calcul\'ees.
 \end{itemize}
 
 % ---- Contraintes techniques ----

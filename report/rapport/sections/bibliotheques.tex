@@ -49,6 +49,27 @@ maximum de vraisemblance, et tests de comparaison entre mod\`eles (loi de
 puissance, lognormale, exponentielle), selon la m\'ethodologie de Clauset
 et al.~\cite{clauset2009powerlaw}. Utilis\'ee en RQ1 et RQ6.
 
+\subsection{Visualisation interactive (prototype web)}
+
+\paragraph{D3.js (v7.9).}
+D3.js calcule le \textit{layout} force-directed (\texttt{d3-force}) qui
+positionne les $12\,880$ n\oe{}uds du prototype web~\cite{cryptographexplorer_web},
+et g\`ere le zoom et le drag de la souris. On a pr\'ef\'er\'e D3 \`a Plotly
+pour garder la main sur le rendu SVG et ne pas d\'ependre d'un serveur de
+\textit{plotting}.
+
+\paragraph{React (v18.3) et TypeScript (v5.8).}
+React d\'ecoupe l'interface en composants (canevas du graphe, panneau
+d'analyse, panneau de statistiques). TypeScript ajoute le typage des
+structures de graphe et des m\'etriques par n\oe{}ud, ce qui \'evite des
+incoh\'erences entre le CSV charg\'e et la simulation D3.
+
+\paragraph{Vite (v5.4), TailwindCSS et shadcn/ui.}
+Vite sert le code en d\'eveloppement et le compile pour la mise en ligne.
+TailwindCSS donne les styles. La biblioth\`eque shadcn/ui (au-dessus de
+Radix~UI) fournit les boutons, sliders et autres contr\^oles du panneau
+d'analyse.
+
 \subsection{R\'edaction et compilation}
 
 \paragraph{\LaTeX{} avec pdf\LaTeX{}.}

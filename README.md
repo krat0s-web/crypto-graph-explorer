@@ -4,6 +4,19 @@
 
 Implémentation complète des **6 Questions de Recherche** du rapport universitaire sur l'analyse du crash WETH/Polygon du 5 août 2024 ("Lundi Noir").
 
+Démo en ligne : [crypto-graph-explorer.vercel.app](https://crypto-graph-explorer.vercel.app)
+
+---
+
+## Deux livrables couplés
+
+Ce dépôt contient les deux livrables du projet :
+
+1. **Prototype web interactif** (racine du dépôt) — visualisation D3.js des 12 880 nœuds, panneau d'analyse couvrant les 6 RQ et 8 analyses avancées. Les chiffres affichés dans l'interface sont des approximations adaptées à une exécution dans le navigateur.
+2. **Sous-projet `report/`** — analyse Python rigoureuse sur les 401 709 transactions brutes et rapport LaTeX universitaire (Paris Nanterre, Licence MIAGE). C'est ce sous-projet qui fournit les chiffres de référence (Gini = 0,9780, σ = 115,90, Q = 0,6445).
+
+Voir [`report/README`](report/) et [`report/rapport/main.pdf`](report/rapport/main.pdf) pour le rapport compilé.
+
 ---
 
 ## Objectif
@@ -51,7 +64,7 @@ Environnement Dev :
 ### Installation
 
 ```bash
-git clone https://github.com/krat0s-web/crypto-graph-explorer.git
+git clone https://github.com/Tibxla/crypto-graph-explorer.git
 cd crypto-graph-explorer
 npm install
 

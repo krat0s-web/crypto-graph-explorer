@@ -133,3 +133,11 @@ La Figure~\ref{fig:rq2_network} permet de visualiser ces relations de centralit\
   \caption{Sous-graphe des 30 n\oe{}uds les plus centraux et de leurs voisins. La taille des n\oe{}uds refl\`ete le score PageRank et la couleur indique la centralit\'e d'interm\'ediarit\'e (bleu~=~faible, orange~=~\'elev\'ee). Les \'etiquettes identifient les 10 adresses les plus influentes.}
   \label{fig:rq2_network}
 \end{figure}
+
+\paragraph{Exploration interactive.}
+Le bouton \og RQ2~: Centralit\'e \fg{} du prototype web~\cite{cryptographexplorer_web}
+affiche les top-10 du degr\'e et du PageRank lus directement dans le CSV
+\texttt{nodes\_metrics.csv}, et relance \`a la demande la \textit{betweenness}
+sur un \'echantillon de $50$ pivots (contre $500$ dans ce rapport). Cliquer
+sur une adresse surligne ses ar\^etes incidentes, ce qui aide \`a voir si
+elle se comporte plut\^ot comme un relais ou comme un accumulateur.

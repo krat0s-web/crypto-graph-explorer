@@ -135,3 +135,13 @@ La Figure~\ref{fig:rq6_whale_network} illustre cette concentration~: les 50 ar\^
 \end{figure}
 
 Avec RQ6, l'image d'ensemble se pr\'ecise~: un \'ecosyst\`eme DeFi o\`u l'architecture en \'etoile, les chemins courts et la concentration des volumes autour de quelques pools de liquidit\'e cr\'eent les conditions d'une amplification syst\'emique des chocs financiers.
+
+\paragraph{Exploration interactive.}
+Le bouton \og RQ6~: Flux Pond\'er\'es \fg{} du prototype web~\cite{cryptographexplorer_web}
+calcule un Gini et la part du top-20\,\% \`a la vol\'ee, mais sur la
+distribution des \emph{degr\'es} des n\oe{}uds visibles, pas sur les
+volumes WETH (qui ne sont pas dans le CSV embarqu\'e). La vraie valeur
+$G = 0{,}9780$, calcul\'ee ici sur les poids des $38\,401$ ar\^etes
+filtr\'ees, reste donc la r\'ef\'erence. Pour la reproduire dans le
+navigateur, il faudrait embarquer un CSV des poids par ar\^ete et y
+brancher le calcul du Gini et de la courbe de Lorenz.
